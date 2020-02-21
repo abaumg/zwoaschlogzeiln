@@ -1,22 +1,22 @@
 import os
 from twython import Twython
 from schlagzeilen import ZwoaSchlogzeiln
+from configparser import ConfigParser
 
-try:
-    CONSUMER_KEY = os.environ['TWITTER_CONSUMER_KEY']
-    CONSUMER_SECRET = os.environ['TWITTER_CONSUMER_SECRET']
-    OAUTH_TOKEN = os.environ['TWITTER_OAUTH_TOKEN']
-    OAUTH_TOKEN_SECRET = os.environ['TWITTER_OAUTH_TOKEN_SECRET']
-except KeyError:
-    quit('Twitter-Zugangsdaten sind fehlerhaft')
+cfg = ConfigParser()
+cfg.read('zwoaschlogzeiln.ini')
 
 # Twitter-Login durchführen
-twitterclient = Twython(CONSUMER_KEY, CONSUMER_SECRET, OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
+twitterclient = Twython(
+    cfg.get('twitter', 'consumer_key'),
+    cfg.get('twitter', 'consumer_secret'),
+    cfg.get('twitter', 'oauth_token'),
+    cfg.get('twitter', 'oauth_token_secret')
+    )
 
 # Schlagzeile generieren
 tweettext = ZwoaSchlogzeiln().schlagzeile_generieren()
 
-print(tweettext)
 if tweettext:
     # twittern!
     twitterclient.update_status(status=tweettext)
