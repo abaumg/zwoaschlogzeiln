@@ -1,3 +1,4 @@
 feedparser
 spacy
 twython
+configparser
