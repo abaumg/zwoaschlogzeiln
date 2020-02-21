@@ -1,6 +1,11 @@
 import feedparser
 import spacy
 from random import choice
+from configparser import ConfigParser
+try:
+    from feedspezifika import *
+except ImportError:
+    pass
 
 
 class ZwoaSchlogzeiln():
@@ -10,51 +15,35 @@ class ZwoaSchlogzeiln():
             titel = titel.replace(char, '')
         return titel
 
-
     def __init__(self):
-        # Feeds laden
-        stol = feedparser.parse('https://www.stol.it/rss/feed/AlleRessorts')
-        tz = feedparser.parse('https://www.tageszeitung.it/feed')
-        snews = feedparser.parse('https://www.suedtirolnews.it/nachrichten/suedtirol-lokal/feed')
-        ut24 = feedparser.parse('https://www.unsertirol24.com/category/suedtirol/feed/')
-
-        # SpaCy initialisieren
-        self.nlp = spacy.load('de')
-
         # Globale Variablen
         self.titel = []
         self.kurzetitel = []
         self.subj = []
 
-        # Feeds parsen
-        # Stol
-        for entry in stol.entries:
-            if '/Lokal/' in entry.link: # nur lokale News
-                if entry['title'].count(' ') > 1:
-                    self.titel.append(self.cleanup(entry['title']))
-                else:
-                    self.kurzetitel.append(self.cleanup(entry['title']))
-        
-        # Tageszeitung
-        for entry in tz.entries:
-            if entry['title'].count(' ') > 1:
-                self.titel.append(self.cleanup(entry['title']))
-            else:
-                self.kurzetitel.append(self.cleanup(entry['title']))
+        # Konfiguration laden
+        cfg = ConfigParser()
+        cfg.read('zwoaschlogzeiln.ini')
 
-        # Südtirolnews
-        for entry in snews.entries:
-            if entry['title'].count(' ') > 1:
-                self.titel.append(self.cleanup(entry['title']))
-            else:
-                self.kurzetitel.append(self.cleanup(entry['title']))
+        # Konfigurierte Sources parsen
+        for name, url in cfg.items('sources'):
+            feed = feedparser.parse(url)
+            
+            # Feedspezifische Filter anwenden, d.h. feedspezifika.<feedname>() aufrufen (sofern existent)
+            for entry in feed.entries:
+                try:
+                    entry = globals()[name](entry)
+                except KeyError:
+                    # entry unverändert lassen
+                    pass
+                if entry:   # Weitermachen, falls der Entry noch existiert und nicht weggefiltert (=auf None gesetzt) wurde
+                    if entry['title'].count(' ') > 1:
+                        self.titel.append(self.cleanup(entry['title']))
+                    else:
+                        self.kurzetitel.append(self.cleanup(entry['title']))
 
-        # UnserTirol24
-        for entry in ut24.entries:
-            if entry['title'].count(' ') > 1:
-                self.titel.append(self.cleanup(entry['title']))
-            else:
-                self.kurzetitel.append(self.cleanup(entry['title']))
+        # SpaCy initialisieren
+        self.nlp = spacy.load('de')
 
         # Sämtliche Titel durch SpaCy jagen und eine Liste aller Nomen und Eigennamen erstellen
         for titel in (self.titel + self.kurzetitel):	# für den Korpus sind die kurzen Titel gut genug
