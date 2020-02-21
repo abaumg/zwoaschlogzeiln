@@ -1,0 +1,5 @@
+def examplefeed1(entry):
+    if '/Lokal/' in entry.link: # nur lokale News
+        return entry
+    else:
+        return None

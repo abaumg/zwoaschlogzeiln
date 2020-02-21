@@ -1,0 +1,9 @@
+[twitter]
+consumer_key=
+consumer_secret=
+oauth_token=
+oauth_token_secret=
+
+[sources]
+examplefeed1=https://url.to.feed.example/feed.xml
+examplefeed2=https://foo.bar.invalid/feed/
