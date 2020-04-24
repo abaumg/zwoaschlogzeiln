@@ -19,9 +19,7 @@ class ZwoaSchlogzeiln():
     def ist_unbedenklich(self, titel):
         stopwords = ['tragisch', 'tod', 'tot', 'tödlich', 'stirbt', 'gestorben', 'unglück', 'opfer', 'trauer',]
         for stopword in stopwords:
-            print('Checke %s in %s' % (titel.lower(), stopword))
             if stopword in titel.lower():
-                print('Gefiltert: %s' % titel)
                 return False
         return True
 
