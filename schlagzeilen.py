@@ -16,6 +16,16 @@ class ZwoaSchlogzeiln():
             titel = titel.replace(char, '')
         return titel
 
+    def ist_unbedenklich(self, titel):
+        stopwords = ['tragisch', 'tod', 'tot', 'tödlich', 'stirbt', 'gestorben', 'unglück', 'opfer', 'trauer',]
+        for stopword in stopwords:
+            print('Checke %s in %s' % (titel.lower(), stopword))
+            if stopword in titel.lower():
+                print('Gefiltert: %s' % titel)
+                return False
+        return True
+
+
     def __init__(self):
         # Globale Variablen
         self.titel = []
@@ -46,10 +56,11 @@ class ZwoaSchlogzeiln():
                     # entry unverändert lassen
                     pass
                 if entry:   # Weitermachen, falls der Entry noch existiert und nicht weggefiltert (=auf None gesetzt) wurde
-                    if entry['title'].count(' ') > 1:
-                        self.titel.append(self.cleanup(entry['title']))
-                    else:
-                        self.kurzetitel.append(self.cleanup(entry['title']))
+                    if self.ist_unbedenklich(entry['title']) is True:
+                        if entry['title'].count(' ') > 1:
+                            self.titel.append(self.cleanup(entry['title']))
+                        else:
+                            self.kurzetitel.append(self.cleanup(entry['title']))
 
         # SpaCy initialisieren
         self.nlp = spacy.load('de')
