@@ -1,4 +1,5 @@
 import feedparser
+import requests
 import spacy
 from random import choice
 from configparser import ConfigParser
@@ -27,12 +28,20 @@ class ZwoaSchlogzeiln():
 
         # Konfigurierte Sources parsen
         for name, url in cfg.items('sources'):
-            feed = feedparser.parse(url)
+
+            resp = requests.get(url)
+            content = resp.content
+            try:
+                content = globals()['filter_content_' + name](content)
+            except KeyError:
+                pass
+
+            feed = feedparser.parse(content)
             
             # Feedspezifische Filter anwenden, d.h. feedspezifika.<feedname>() aufrufen (sofern existent)
             for entry in feed.entries:
                 try:
-                    entry = globals()[name](entry)
+                    entry = globals()['filter_items_' + name](entry)
                 except KeyError:
                     # entry unverändert lassen
                     pass

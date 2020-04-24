@@ -1,5 +1,9 @@
-def examplefeed1(entry):
+def filter_items_examplefeed1(entry):
     if '/Lokal/' in entry.link: # nur lokale News
         return entry
     else:
         return None
+
+def filter_content_examplefeed2(content):
+    content = content.replace('Hund', 'Katze') # Content kann beliebig manipuliert werden
+    return content

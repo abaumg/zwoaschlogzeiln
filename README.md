@@ -6,6 +6,7 @@
 - Konfigurationsdatei kopieren: `cp zwoaschlogzeiln.ini.example zwoaschlogzeiln.ini`
 - Twitter-Zugangsdaten konfigurieren
 - Feeds konfigurieren: im Abschnitt `[sources]` eine Zeile pro Feed eintragen: `feedname=feedurl` (feedname ist frei wählbar)
-- eventuelle feedspezifische Anpassungen programmieren:
+- eventuelle feedspezifische Anpassungen programmieren, wobei `xxx` identisch sein muss mit`feedname=` in `zwoaschlogzeiln.ini`:
   - `cp feedspezifika.py.example feedspezifika.py`
-  - Funktion muss gleich heißen wie `feedname=` in `zwoaschlogzeiln.ini`
+  - Funktion zur Manipulation des gesamten Feeds: `filter_items_xxx`
+  - Funktion zur Manipulation eines einzelnen Feedeintrags: `filter_content_xxx`
