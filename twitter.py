@@ -4,7 +4,12 @@ from schlagzeilen import ZwoaSchlogzeiln
 from configparser import ConfigParser
 
 cfg = ConfigParser()
-cfg.read('zwoaschlogzeiln.ini')
+cfg.read(
+    os.path.join(
+        os.path.dirname(__file__),
+        'zwoaschlogzeiln.ini'
+    )
+)
 
 # Twitter-Login durchführen
 twitterclient = Twython(

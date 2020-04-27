@@ -1,4 +1,5 @@
 import feedparser
+import os
 import requests
 import spacy
 from random import choice
@@ -32,7 +33,12 @@ class ZwoaSchlogzeiln():
 
         # Konfiguration laden
         cfg = ConfigParser()
-        cfg.read('zwoaschlogzeiln.ini')
+        cfg.read(
+            os.path.join(
+                os.path.dirname(__file__),
+                'zwoaschlogzeiln.ini'
+                )
+            )
 
         # Konfigurierte Sources parsen
         for name, url in cfg.items('sources'):
