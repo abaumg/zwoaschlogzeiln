@@ -103,6 +103,7 @@ class ZwoaSchlogzeiln():
         # Punktuation bereinigen
         satzneu = satzneu.replace(' : ', ': ')
         satzneu = satzneu.replace(' . ', '. ')
+        satzneu = satzneu.replace(' , ', ', ')
         satzneu = satzneu.replace(' ?', '?')
         satzneu = satzneu.replace(' .', '.')
         satzneu = satzneu.replace(' !', '!')
