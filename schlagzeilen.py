@@ -72,7 +72,7 @@ class ZwoaSchlogzeiln:
                             self.kurzetitel.append(self.cleanup(entry["title"]))
 
         # SpaCy initialisieren
-        self.nlp = spacy.load("de")
+        self.nlp = spacy.load("de_core_news_sm")
 
         # Sämtliche Titel durch SpaCy jagen und eine Liste aller Nomen und Eigennamen erstellen
         for titel in (
