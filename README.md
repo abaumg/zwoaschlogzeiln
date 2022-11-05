@@ -5,12 +5,20 @@
 - deutsches SpaCy-Sprachmodell laden: `python3 -m spacy download de_core_news_sm`
 - Konfigurationsdatei kopieren: `cp zwoaschlogzeiln.ini.example zwoaschlogzeiln.ini`
 - Twitter-Zugangsdaten konfigurieren
+- Mastodon-Zugangsdaten konfigurieren (siehe unten)
 - Feeds konfigurieren: im Abschnitt `[sources]` eine Zeile pro Feed eintragen: `feedname=feedurl` (feedname ist frei wählbar)
 - eventuelle feedspezifische Anpassungen programmieren, wobei `xxx` identisch sein muss mit`feedname=` in `zwoaschlogzeiln.ini`:
 -  `cp feedspezifika.py.example feedspezifika.py`
 - Funktion zur Manipulation des gesamten Feeds: `filter_items_xxx`
 - Funktion zur Manipulation eines einzelnen Feedeintrags: `filter_content_xxx`
 
+### Mastodon
+```
+from mastodon import Mastodon
+Mastodon.create_app('zwoaschlogzeiln', api_base_url = 'https://xxx', to_file = 'clientcred.secret')
+mastodon = Mastodon(client_id = 'clientcred.secret', api_base_url = 'https://xxx')
+mastodon.log_in('email', 'password', to_file = 'usercred.secret')
+```
 
 ## Beispiel für Anpassungen:
 Die Nachrichtenseite nachrichten.it bietet keinen RSS-Feed an und steht somit als Quelle für ZwoaSchlogzeilen nicht zur Verfügung. Allerdings gibt es ein proprietäres JSON-File, das die Nachrichten enthält. Mit einem Filter `filter_content_nachrichtenit` kann das JSON-File ganz einfach ausgelesen und in einen RSS-Feed umgewandelt werden:

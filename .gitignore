@@ -2,3 +2,4 @@
 zwoaschlogzeiln.ini
 feedspezifika.py
 venv/
+*.secret

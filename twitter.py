@@ -1,5 +1,6 @@
 import os
 from twython import Twython
+from mastodon import Mastodon
 from schlagzeilen import ZwoaSchlogzeiln
 from configparser import ConfigParser
 
@@ -14,9 +15,17 @@ twitterclient = Twython(
     cfg.get("twitter", "oauth_token_secret"),
 )
 
+# Mastodon
+mastodon = Mastodon(
+    access_token="usercred.secret", api_base_url=cfg.get("mastodon", "instance_url")
+)
+
+ZS = ZwoaSchlogzeiln()
+
 # Schlagzeile generieren
-tweettext = ZwoaSchlogzeiln().schlagzeile_generieren()
+tweettext = ZS.schlagzeile_generieren()
 
 if tweettext:
     # twittern!
     twitterclient.update_status(status=tweettext)
+    mastodon.status_post(status=tweettext, visibility="unlisted")
