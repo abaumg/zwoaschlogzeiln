@@ -31,7 +31,7 @@ class ZwoaSchlogzeiln:
             "trauer",
         ]
         for stopword in stopwords:
-            if stopword in titel.lower():
+            if stopword.strip().lower() in titel.lower():
                 return False
         return True
 
