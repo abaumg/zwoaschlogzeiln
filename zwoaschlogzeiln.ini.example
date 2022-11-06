@@ -10,3 +10,6 @@ instance_url=
 [sources]
 examplefeed1=https://url.to.feed.example/feed.xml
 examplefeed2=https://foo.bar.invalid/feed/
+
+[common]
+stopwords=word1,word2

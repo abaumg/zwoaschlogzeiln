@@ -19,29 +19,19 @@ class ZwoaSchlogzeiln:
         return titel
 
     def ist_unbedenklich(self, titel):
-        stopwords = [
-            "tragisch",
-            "tod",
-            "tot",
-            "tödlich",
-            "stirbt",
-            "gestorben",
-            "unglück",
-            "opfer",
-            "trauer",
-        ]
-        for stopword in stopwords:
+        for stopword in self.stopwords:
             if stopword.strip().lower() in titel.lower():
                 return False
         return True
 
     def __init__(self):
+        cfg = ConfigParser()
+        cfg.read(os.path.join(os.path.dirname(__file__), "zwoaschlogzeiln.ini"))
+
         self.titel = []
         self.kurzetitel = []
         self.subj = []
-
-        cfg = ConfigParser()
-        cfg.read(os.path.join(os.path.dirname(__file__), "zwoaschlogzeiln.ini"))
+        self.stopwords = cfg.get("common", "stopwords").split(",")
 
         # Konfigurierte Sources parsen
         for name, url in cfg.items("sources"):
