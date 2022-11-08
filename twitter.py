@@ -17,7 +17,8 @@ twitterclient = Twython(
 
 # Mastodon
 mastodon = Mastodon(
-    access_token="usercred.secret", api_base_url=cfg.get("mastodon", "instance_url")
+    access_token=cfg.get("mastodon", "access_token"),
+    api_base_url=cfg.get("mastodon", "instance_url"),
 )
 
 ZS = ZwoaSchlogzeiln()
@@ -28,4 +29,7 @@ tweettext = ZS.schlagzeile_generieren()
 if tweettext:
     # twittern!
     twitterclient.update_status(status=tweettext)
-    mastodon.status_post(status=tweettext, visibility="unlisted")
+    mastodon.status_post(
+        status=tweettext,
+        visibility="unlisted",
+    )

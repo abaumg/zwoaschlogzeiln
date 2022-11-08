@@ -6,6 +6,7 @@ oauth_token_secret=
 
 [mastodon]
 instance_url=
+access_token=
 
 [sources]
 examplefeed1=https://url.to.feed.example/feed.xml
